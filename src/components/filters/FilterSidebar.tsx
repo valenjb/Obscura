@@ -42,9 +42,10 @@ export interface Filters {
 
 interface FilterSidebarProps {
   onFiltersChange: (filters: Filters) => void
+  onClose: () => void
 }
 
-export default function FilterSidebar({ onFiltersChange }: FilterSidebarProps) {
+export default function FilterSidebar({ onFiltersChange, onClose }: FilterSidebarProps) {
   const [genres, setGenres] = useState<number[]>([])
   const [decades, setDecades] = useState<number[]>([])
   const [countries, setCountries] = useState<string[]>([])
@@ -94,10 +95,13 @@ export default function FilterSidebar({ onFiltersChange }: FilterSidebarProps) {
 
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <button
+          onClick={onClose}
+          className="flex items-center gap-2 hover:opacity-70 transition-opacity duration-200"
+        >
           <SlidersHorizontal size={16} className="text-amber" />
           <span className="text-ivory font-medium">Filtros</span>
-        </div>
+        </button>
         {hasFilters && (
           <button
             onClick={clearFilters}
