@@ -1,17 +1,20 @@
-import { getTrending } from '@/lib/tmdb'
-import MovieCard from '@/components/movies/MovieCard'
+import { getTrending, getMoviesByGenre, getMoviesByDecade } from '@/lib/tmdb'
+import ExploreClient from '@/components/movies/ExploreClient'
 
 export default async function Home() {
-  const movies = await getTrending()
+  const [trending, arthouse, byDecade] = await Promise.all([
+    getTrending(),
+    getMoviesByGenre(18),
+    getMoviesByDecade(1960),
+  ])
 
   return (
-    <main className="min-h-screen pt-24 p-8">
-      <h1 className="text-amber font-display text-4xl mb-8">Tendencias</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {movies.slice(0, 10).map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+    <main className="min-h-screen pt-24 px-8 pb-8">
+      <ExploreClient
+        trending={trending}
+        arthouse={arthouse}
+        byDecade={byDecade}
+      />
     </main>
   )
 }

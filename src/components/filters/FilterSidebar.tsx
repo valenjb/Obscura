@@ -1,0 +1,199 @@
+'use client'
+
+import { useState } from 'react'
+import { SlidersHorizontal } from 'lucide-react'
+
+const GENRES = [
+  { id: 18,    name: 'Drama' },
+  { id: 99,    name: 'Documental' },
+  { id: 53,    name: 'Thriller' },
+  { id: 35,    name: 'Comedia' },
+  { id: 27,    name: 'Terror' },
+  { id: 878,   name: 'Ciencia ficción' },
+  { id: 10402, name: 'Experimental' },
+]
+
+const DECADES = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
+
+const COUNTRIES = [
+  { code: 'FR', name: 'Francia' },
+  { code: 'IT', name: 'Italia' },
+  { code: 'JP', name: 'Japón' },
+  { code: 'US', name: 'Estados Unidos' },
+  { code: 'AR', name: 'Argentina' },
+  { code: 'ES', name: 'España' },
+  { code: 'DE', name: 'Alemania' },
+  { code: 'KR', name: 'Corea del Sur' },
+  { code: 'GB', name: 'Reino Unido' },
+  { code: 'MX', name: 'México' },
+  { code: 'BR', name: 'Brasil' },
+  { code: 'IR', name: 'Irán' },
+  { code: 'CN', name: 'China' },
+  { code: 'RU', name: 'Rusia' },
+  { code: 'SE', name: 'Suecia' },
+]
+
+export interface Filters {
+  genres: number[]
+  decades: number[]
+  countries: string[]
+  director: string
+}
+
+interface FilterSidebarProps {
+  onFiltersChange: (filters: Filters) => void
+}
+
+export default function FilterSidebar({ onFiltersChange }: FilterSidebarProps) {
+  const [genres, setGenres] = useState<number[]>([])
+  const [decades, setDecades] = useState<number[]>([])
+  const [countries, setCountries] = useState<string[]>([])
+  const [director, setDirector] = useState('')
+
+  function toggleGenre(id: number) {
+    const updated = genres.includes(id)
+      ? genres.filter(g => g !== id)
+      : [...genres, id]
+    setGenres(updated)
+    onFiltersChange({ genres: updated, decades, countries, director })
+  }
+
+  function toggleDecade(decade: number) {
+    const updated = decades.includes(decade)
+      ? decades.filter(d => d !== decade)
+      : [...decades, decade]
+    setDecades(updated)
+    onFiltersChange({ genres, decades: updated, countries, director })
+  }
+
+  function toggleCountry(code: string) {
+    const updated = countries.includes(code)
+      ? countries.filter(c => c !== code)
+      : [...countries, code]
+    setCountries(updated)
+    onFiltersChange({ genres, decades, countries: updated, director })
+  }
+
+  function handleDirector(value: string) {
+    setDirector(value)
+    onFiltersChange({ genres, decades, countries, director: value })
+  }
+
+  function clearFilters() {
+    setGenres([])
+    setDecades([])
+    setCountries([])
+    setDirector('')
+    onFiltersChange({ genres: [], decades: [], countries: [], director: '' })
+  }
+
+  const hasFilters = genres.length > 0 || decades.length > 0 || countries.length > 0 || director !== ''
+
+  return (
+    <aside className="w-64 flex-shrink-0 flex flex-col gap-6">
+
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <SlidersHorizontal size={16} className="text-amber" />
+          <span className="text-ivory font-medium">Filtros</span>
+        </div>
+        {hasFilters && (
+          <button
+            onClick={clearFilters}
+            className="text-muted text-xs hover:text-amber transition-colors duration-200"
+          >
+            Limpiar
+          </button>
+        )}
+      </div>
+
+      {/* Director */}
+      <div className="flex flex-col gap-2">
+        <label className="text-muted text-xs uppercase tracking-wider">Director</label>
+        <input
+          type="text"
+          value={director}
+          onChange={e => handleDirector(e.target.value)}
+          placeholder="Ej: Kubrick, Fellini..."
+          className="
+            bg-surface-elevated border border-border rounded px-3 py-2
+            text-ivory text-sm placeholder:text-muted
+            focus:outline-none focus:border-amber
+            transition-colors duration-200
+          "
+        />
+      </div>
+
+      {/* País */}
+      <div className="flex flex-col gap-2">
+      <label className="text-muted text-xs uppercase tracking-wider">País</label>
+      <div className="flex flex-wrap gap-2">
+          {COUNTRIES.map(c => (
+           <button
+              key={c.code}
+              onClick={() => toggleCountry(c.code)}
+              className={`
+              px-2 py-1 rounded text-xs font-medium
+              transition-colors duration-200
+              ${countries.includes(c.code)
+                  ? 'bg-amber text-background'
+                  : 'bg-surface-elevated text-muted hover:text-ivory border border-border'
+              }
+              `}
+          >
+              {c.name}
+          </button>
+          ))}
+      </div>
+      </div>
+
+      {/* Década */}
+      <div className="flex flex-col gap-2">
+        <label className="text-muted text-xs uppercase tracking-wider">Década</label>
+        <div className="flex flex-wrap gap-2">
+          {DECADES.map(decade => (
+            <button
+              key={decade}
+              onClick={() => toggleDecade(decade)}
+              className={`
+                px-2 py-1 rounded text-xs font-medium
+                transition-colors duration-200
+                ${decades.includes(decade)
+                  ? 'bg-amber text-background'
+                  : 'bg-surface-elevated text-muted hover:text-ivory border border-border'
+                }
+              `}
+            >
+              {decade}s
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Género */}
+      <div className="flex flex-col gap-2">
+        <label className="text-muted text-xs uppercase tracking-wider">Género</label>
+        <div className="flex flex-wrap gap-2">
+          {GENRES.map(genre => (
+            <button
+              key={genre.id}
+              onClick={() => toggleGenre(genre.id)}
+              className={`
+                px-2 py-1 rounded text-xs font-medium
+                transition-colors duration-200
+                ${genres.includes(genre.id)
+                  ? 'bg-amber text-background'
+                  : 'bg-surface-elevated text-muted hover:text-ivory border border-border'
+                }
+              `}
+            >
+              {genre.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+    </aside>
+  )
+}
