@@ -10,7 +10,7 @@ export default function MovieRow({ title, movies }: MovieRowProps) {
   return (
     <section className="flex flex-col gap-4">
       <h2 className="font-display text-2xl text-ivory px-1">{title}</h2>
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+      <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar scroll-smooth">
         {movies.map((movie) => (
           <div key={movie.id} className="flex-shrink-0 w-40 md:w-48">
             <MovieCard movie={movie} />

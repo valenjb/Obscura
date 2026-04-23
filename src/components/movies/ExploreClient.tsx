@@ -7,6 +7,7 @@ import MovieRow from '@/components/movies/MovieRow'
 import MovieCard from '@/components/movies/MovieCard'
 import FilterSidebar from '@/components/filters/FilterSidebar'
 import SearchBar from '@/components/ui/SearchBar'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 
 interface ExploreClientProps {
   trending: Movie[]
@@ -18,6 +19,7 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
   const [searchResults, setSearchResults] = useState<Movie[] | null>(null)
   const [filteredResults, setFilteredResults] = useState<Movie[] | null>(null)
   const [isSearching, setIsSearching] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -86,13 +88,30 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
     <div className="flex gap-8">
 
       {/* Sidebar */}
-      <FilterSidebar onFiltersChange={handleFiltersChange} />
+      {sidebarOpen && (
+        <FilterSidebar onFiltersChange={handleFiltersChange} />
+      )}
 
       {/* Contenido principal */}
       <div className="flex-1 flex flex-col gap-10 min-w-0">
 
-        {/* Buscador */}
-        <SearchBar onSearch={handleSearch} />
+        {/* Botón toggle + Buscador */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="flex items-center gap-2 text-muted hover:text-amber transition-colors duration-200"
+          >
+            {sidebarOpen
+              ? <PanelLeftClose size={18} />
+              : <PanelLeftOpen size={18} />
+            }
+            <span className="text-sm">{sidebarOpen ? 'Ocultar filtros' : 'Mostrar filtros'}</span>
+          </button>
+
+          <div className="flex-1">
+            <SearchBar onSearch={handleSearch} />
+          </div>
+        </div>
 
         {/* Resultados de búsqueda */}
         {showingSearch && (

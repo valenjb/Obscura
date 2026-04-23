@@ -31,3 +31,28 @@
     border-color: var(--color-border);
   }
 }
+
+@layer base {
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-amber);
+  }
+
+  @media (max-width: 640px) {
+    .custom-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
