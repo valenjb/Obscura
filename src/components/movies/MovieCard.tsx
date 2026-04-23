@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Movie } from '@/types/tmdb'
 import { getImageUrl } from '@/lib/tmdb'
+import { Bookmark, Eye, Star } from 'lucide-react'
 
 interface MovieCardProps {
   movie: Movie
@@ -47,6 +48,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
             onClick={() => setSaved(!saved)}
             className={`
               px-4 py-2 rounded text-sm font-medium w-32
+              flex items-center justify-center gap-2
               transition-colors duration-200
               ${saved
                 ? 'bg-amber text-background'
@@ -54,13 +56,15 @@ export default function MovieCard({ movie }: MovieCardProps) {
               }
             `}
           >
-            {saved ? '🔖 Guardada' : '🔖 Guardar'}
+            <Bookmark size={14} fill={saved ? 'currentColor' : 'none'} />
+            {saved ? 'Guardada' : 'Guardar'}
           </button>
 
           <button
             onClick={() => setWatched(!watched)}
             className={`
               px-4 py-2 rounded text-sm font-medium w-32
+              flex items-center justify-center gap-2
               transition-colors duration-200
               ${watched
                 ? 'bg-amber text-background'
@@ -68,20 +72,21 @@ export default function MovieCard({ movie }: MovieCardProps) {
               }
             `}
           >
-            {watched ? '✓ Vista' : '✓ Ya la vi'}
+            <Eye size={14} />
+            {watched ? 'Vista' : 'Ya la vi'}
           </button>
         </div>
 
         {/* Badges */}
         <div className="absolute top-2 right-2 flex flex-col gap-1">
           {saved && (
-            <span className="bg-amber text-background text-xs px-1.5 py-0.5 rounded font-bold">
-              🔖
+            <span className="bg-amber text-background p-1 rounded">
+              <Bookmark size={12} fill="currentColor" />
             </span>
           )}
           {watched && (
-            <span className="bg-amber text-background text-xs px-1.5 py-0.5 rounded font-bold">
-              ✓
+            <span className="bg-amber text-background p-1 rounded">
+              <Eye size={12} />
             </span>
           )}
         </div>
@@ -95,8 +100,9 @@ export default function MovieCard({ movie }: MovieCardProps) {
         <p className="text-muted text-xs">
           {year}
         </p>
-        <p className="text-amber text-xs font-medium">
-          ★ {movie.vote_average.toFixed(1)}
+        <p className="text-amber text-xs font-medium flex items-center gap-1">
+          <Star size={10} fill="currentColor" />
+          {movie.vote_average.toFixed(1)}
         </p>
       </Link>
 
