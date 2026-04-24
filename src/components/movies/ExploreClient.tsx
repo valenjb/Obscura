@@ -46,7 +46,8 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
     const hasFilters = filters.genres.length > 0 ||
       filters.decades.length > 0 ||
       filters.countries.length > 0 ||
-      filters.director.trim() !== ''
+      filters.director.trim() !== '' ||
+      filters.actor.trim() !== ''
 
     if (!hasFilters) {
       setFilteredResults(null)
@@ -70,7 +71,7 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
     }
 
     if (filters.director.trim() !== '') {
-      const personRes = await fetch(`/api/search-person?query=${encodeURIComponent(filters.director)}`)
+      const personRes = await fetch(`/api/search-director?query=${encodeURIComponent(filters.director)}`)
       const personData = await personRes.json()
       
       if (personData.results.length === 0) {
@@ -90,6 +91,30 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
       const creditsData = await creditsRes.json()
       const directedMovies = creditsData.crew?.filter((m: {job: string}) => m.job === 'Director') ?? []
       setFilteredResults(directedMovies)
+      return
+    }
+
+    if (filters.actor.trim() !== '') {
+      const personRes = await fetch(`/api/search-actor?query=${encodeURIComponent(filters.actor)}`)
+      const personData = await personRes.json()
+      
+      if (personData.results.length === 0) {
+        setFilteredResults([])
+        return
+      }
+
+      const actorId = personData.results[0].id
+      const creditsRes = await fetch(
+        `https://api.themoviedb.org/3/person/${actorId}/movie_credits?language=es`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN}`,
+          },
+        }
+      )
+      const creditsData = await creditsRes.json()
+      const actedMovies = creditsData.cast ?? []
+      setFilteredResults(actedMovies)
       return
     }
 

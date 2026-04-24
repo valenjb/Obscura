@@ -38,6 +38,7 @@ export interface Filters {
   decades: number[]
   countries: string[]
   director: string
+  actor: string
 }
 
 interface FilterSidebarProps {
@@ -50,13 +51,14 @@ export default function FilterSidebar({ onFiltersChange, onClose }: FilterSideba
   const [decades, setDecades] = useState<number[]>([])
   const [countries, setCountries] = useState<string[]>([])
   const [director, setDirector] = useState('')
+  const [actor, setActor] = useState('')
 
   function toggleGenre(id: number) {
     const updated = genres.includes(id)
       ? genres.filter(g => g !== id)
       : [...genres, id]
     setGenres(updated)
-    onFiltersChange({ genres: updated, decades, countries, director })
+    onFiltersChange({ genres: updated, decades, countries, director, actor })
   }
 
   function toggleDecade(decade: number) {
@@ -64,7 +66,7 @@ export default function FilterSidebar({ onFiltersChange, onClose }: FilterSideba
       ? decades.filter(d => d !== decade)
       : [...decades, decade]
     setDecades(updated)
-    onFiltersChange({ genres, decades: updated, countries, director })
+    onFiltersChange({ genres, decades: updated, countries, director, actor })
   }
 
   function toggleCountry(code: string) {
@@ -72,12 +74,17 @@ export default function FilterSidebar({ onFiltersChange, onClose }: FilterSideba
       ? countries.filter(c => c !== code)
       : [...countries, code]
     setCountries(updated)
-    onFiltersChange({ genres, decades, countries: updated, director })
+    onFiltersChange({ genres, decades, countries: updated, director, actor })
   }
 
   function handleDirector(value: string) {
     setDirector(value)
-    onFiltersChange({ genres, decades, countries, director: value })
+    onFiltersChange({ genres, decades, countries, director: value, actor })
+  }
+
+  function handleActor(value: string) {
+    setActor(value)
+    onFiltersChange({ genres, decades, countries, director, actor: value })
   }
 
   function clearFilters() {
@@ -85,10 +92,11 @@ export default function FilterSidebar({ onFiltersChange, onClose }: FilterSideba
     setDecades([])
     setCountries([])
     setDirector('')
-    onFiltersChange({ genres: [], decades: [], countries: [], director: '' })
+    setActor('')
+    onFiltersChange({ genres: [], decades: [], countries: [], director: '', actor: '' })
   }
 
-  const hasFilters = genres.length > 0 || decades.length > 0 || countries.length > 0 || director !== ''
+  const hasFilters = genres.length > 0 || decades.length > 0 || countries.length > 0 || director !== '' || actor !== ''
 
   return (
     <aside className="w-64 flex-shrink-0 flex flex-col gap-6">
@@ -120,6 +128,23 @@ export default function FilterSidebar({ onFiltersChange, onClose }: FilterSideba
           value={director}
           onChange={e => handleDirector(e.target.value)}
           placeholder="Ej: Kubrick, Fellini..."
+          className="
+            bg-surface-elevated border border-border rounded px-3 py-2
+            text-ivory text-sm placeholder:text-muted
+            focus:outline-none focus:border-amber
+            transition-colors duration-200
+          "
+        />
+      </div>
+
+      {/* Actor */}
+      <div className="flex flex-col gap-2">
+        <label className="text-muted text-xs uppercase tracking-wider">Actor</label>
+        <input
+          type="text"
+          value={actor}
+          onChange={e => handleActor(e.target.value)}
+          placeholder="Ej: Pacino, Streep..."
           className="
             bg-surface-elevated border border-border rounded px-3 py-2
             text-ivory text-sm placeholder:text-muted
