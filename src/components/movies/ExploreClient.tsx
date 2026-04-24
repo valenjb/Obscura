@@ -7,7 +7,7 @@ import MovieRow from '@/components/movies/MovieRow'
 import MovieCard from '@/components/movies/MovieCard'
 import FilterSidebar from '@/components/filters/FilterSidebar'
 import SearchBar from '@/components/ui/SearchBar'
-import { PanelLeftClose, PanelLeftOpen, SlidersHorizontal } from 'lucide-react'
+import {SlidersHorizontal } from 'lucide-react'
 
 interface ExploreClientProps {
   trending: Movie[]
@@ -67,6 +67,30 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
       const maxYear = Math.max(...filters.decades) + 9
       params.set('primary_release_date.gte', `${minYear}-01-01`)
       params.set('primary_release_date.lte', `${maxYear}-12-31`)
+    }
+
+    if (filters.director.trim() !== '') {
+      const personRes = await fetch(`/api/search-person?query=${encodeURIComponent(filters.director)}`)
+      const personData = await personRes.json()
+      
+      if (personData.results.length === 0) {
+        setFilteredResults([])
+        return
+      }
+
+      const directorId = personData.results[0].id
+      const creditsRes = await fetch(
+        `https://api.themoviedb.org/3/person/${directorId}/movie_credits?language=es`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN}`,
+          },
+        }
+      )
+      const creditsData = await creditsRes.json()
+      const directedMovies = creditsData.crew?.filter((m: {job: string}) => m.job === 'Director') ?? []
+      setFilteredResults(directedMovies)
+      return
     }
 
     const res = await fetch(

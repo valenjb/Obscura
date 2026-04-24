@@ -50,3 +50,10 @@ export function getImageUrl(path: string | null, size: 'w300' | 'w500' | 'w780' 
   if (!path) return null
   return `https://image.tmdb.org/t/p/${size}${path}`
 }
+
+export async function searchPerson(query: string): Promise<{ id: number; name: string; known_for_department: string }[]> {
+  const data = await fetchTMDB<TMDBResponse<{ id: number; name: string; known_for_department: string }>>(
+    `/search/person?query=${encodeURIComponent(query)}&language=es`
+  )
+  return data.results
+}
