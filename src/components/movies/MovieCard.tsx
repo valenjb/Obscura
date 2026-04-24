@@ -93,7 +93,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
       </div>
 
       {/* Info */}
-      <Link href={`/movie/${movie.id}`} className="p-3 flex flex-col gap-1 hover:bg-surface-elevated transition-colors duration-200">
+      <Link href={`/movie/${movie.id}`} className="p-3 flex flex-col gap-1 hover:bg-surface-elevated transition-colors duration-200 h-20">
         <h3 className="text-ivory text-sm font-medium leading-tight line-clamp-2">
           {movie.title}
         </h3>
