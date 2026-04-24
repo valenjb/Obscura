@@ -99,7 +99,7 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
       <div className="flex-1 flex flex-col gap-10 min-w-0">
 
         {/* Header toggle + Buscador */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 transition-all duration-300">
           {!sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(true)}

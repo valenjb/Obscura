@@ -47,7 +47,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--color-amber);
+    background: var(--color-muted);
   }
 
   @media (max-width: 640px) {
