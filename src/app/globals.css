@@ -1,6 +1,6 @@
 @import "tailwindcss/index.css";
 
-@theme inline{
+@theme inline {
   /* Fondos */
   --color-background:       #1A1A1A;
   --color-surface:          #222222;
@@ -21,18 +21,17 @@
 }
 
 @layer base {
-  html{
+  html {
     background-color: var(--color-background);
     color: var(--color-ivory);
   }
 
- * {
+  * {
     box-sizing: border-box;
     border-color: var(--color-border);
   }
-}
 
-@layer base {
+  /* Scrollbar horizontal (MovieRow) */
   .custom-scrollbar::-webkit-scrollbar {
     height: 4px;
   }
@@ -50,9 +49,46 @@
     background: var(--color-muted);
   }
 
+  /* Scrollbar global */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+  }
+
+  /* Mobile / pantalla chica */
   @media (max-width: 640px) {
     .custom-scrollbar::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  /* Scrollbar vertical (Sidebar filtros) */
+  .sidebar-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
   }
 }

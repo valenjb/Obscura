@@ -159,7 +159,7 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
       {/* Sidebar con animación */}
       <div className={`
         flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out
-        sticky top-24 self-start max-h-screen overflow-y-auto
+        sticky top-24 self-start max-h-screen overflow-y-auto sidebar-scrollbar
         ${sidebarOpen ? 'w-64 opacity-100' : 'w-0 opacity-0'}
       `}>
         <FilterSidebar onFiltersChange={handleFiltersChange} onClose={() => setSidebarOpen(false)} />
