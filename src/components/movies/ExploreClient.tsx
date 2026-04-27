@@ -168,7 +168,10 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
         {showingSearch && (
           <section className="flex flex-col gap-4">
             <h2 className="font-display text-2xl text-ivory">
-              {isSearching ? 'Buscando...' : `Resultados`}
+              {isSearching
+                ? 'Buscando...'
+                : `${searchResults!.length} resultados para tu búsqueda`
+              }
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {searchResults?.map(movie => (
@@ -182,7 +185,10 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
         {!showingSearch && showingFiltered && (
           <section className="flex flex-col gap-4">
             <h2 className="font-display text-2xl text-ivory">
-              {filteredResults!.length > 0 ? 'Películas encontradas' : 'Sin resultados'}
+              {filteredResults!.length > 0
+                ? `${filteredResults!.length} películas encontradas`
+                : 'Sin resultados'
+              }
             </h2>
             {filteredResults!.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
