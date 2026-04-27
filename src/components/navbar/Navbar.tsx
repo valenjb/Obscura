@@ -30,7 +30,10 @@ export default function Navbar() {
 
         {/* Logo */}
         <button
-          onClick={() => router.push(`/?reset=${Date.now()}`)}
+          onClick={() => {
+            router.push(`/?reset=${Date.now()}`)
+            setTimeout(() => router.replace('/'), 100)
+          }}
           className="font-display text-xl text-ivory tracking-widest"
         >
           OBSCURA
