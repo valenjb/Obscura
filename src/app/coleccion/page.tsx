@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import MovieCard from '@/components/movies/MovieCard'
 import Link from 'next/link'
 import { Movie } from '@/types/tmdb'
+import { Bookmark, Check } from 'lucide-react'
 
 export default function ColeccionPage() {
   const [activeTab, setActiveTab] = useState<'watchlist' | 'watched'>('watchlist')
@@ -62,9 +63,10 @@ export default function ColeccionPage() {
       {/* Contenido */}
       {isEmpty ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
-          <span className="text-6xl text-muted">
-            {activeTab === 'watchlist' ? '🔖' : '✓'}
-          </span>
+          {activeTab === 'watchlist'
+            ? <Bookmark size={48} className="text-muted" />
+            : <Check size={48} className="text-muted" />
+          }
           <p className="text-ivory text-lg font-display">
             {activeTab === 'watchlist'
               ? 'Todavía no guardaste ninguna película'

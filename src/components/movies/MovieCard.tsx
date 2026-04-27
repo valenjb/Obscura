@@ -2,10 +2,10 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 import { Movie } from '@/types/tmdb'
 import { getImageUrl } from '@/lib/tmdb'
 import { Bookmark, Eye, Star } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 interface MovieCardProps {
   movie: Movie
@@ -14,6 +14,12 @@ interface MovieCardProps {
 export default function MovieCard({ movie }: MovieCardProps) {
   const [saved, setSaved] = useState(false)
   const [watched, setWatched] = useState(false)
+  useEffect(() => {
+    const watchlist: Movie[] = JSON.parse(localStorage.getItem('watchlist') ?? '[]')
+    const watchedList: Movie[] = JSON.parse(localStorage.getItem('watched') ?? '[]')
+    setSaved(watchlist.some(m => m.id === movie.id))
+    setWatched(watchedList.some(m => m.id === movie.id))
+  }, [movie.id])
 
   const posterUrl = getImageUrl(movie.poster_path, 'w500')
   const year = movie.release_date?.slice(0, 4) ?? '—'
@@ -45,32 +51,30 @@ export default function MovieCard({ movie }: MovieCardProps) {
           flex flex-col items-center justify-center gap-3
         ">
           <button
-            onClick={() => setSaved(!saved)}
-            className={`
-              px-4 py-2 rounded text-sm font-medium w-32
-              flex items-center justify-center gap-2
-              transition-colors duration-200
-              ${saved
-                ? 'bg-amber text-background'
-                : 'border border-ivory text-ivory hover:border-amber hover:text-amber'
+            onClick={() => {
+              const watchlist: Movie[] = JSON.parse(localStorage.getItem('watchlist') ?? '[]')
+              if (saved) {
+                localStorage.setItem('watchlist', JSON.stringify(watchlist.filter(m => m.id !== movie.id)))
+              } else {
+                localStorage.setItem('watchlist', JSON.stringify([...watchlist, movie]))
               }
-            `}
+              setSaved(!saved)
+            }}
           >
             <Bookmark size={14} fill={saved ? 'currentColor' : 'none'} />
             {saved ? 'Guardada' : 'Guardar'}
           </button>
 
           <button
-            onClick={() => setWatched(!watched)}
-            className={`
-              px-4 py-2 rounded text-sm font-medium w-32
-              flex items-center justify-center gap-2
-              transition-colors duration-200
-              ${watched
-                ? 'bg-amber text-background'
-                : 'border border-ivory text-ivory hover:border-amber hover:text-amber'
+            onClick={() => {
+              const watchedList: Movie[] = JSON.parse(localStorage.getItem('watched') ?? '[]')
+              if (watched) {
+                localStorage.setItem('watched', JSON.stringify(watchedList.filter(m => m.id !== movie.id)))
+              } else {
+                localStorage.setItem('watched', JSON.stringify([...watchedList, movie]))
               }
-            `}
+              setWatched(!watched)
+            }}
           >
             <Eye size={14} />
             {watched ? 'Vista' : 'Ya la vi'}
