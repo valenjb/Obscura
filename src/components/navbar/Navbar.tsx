@@ -2,8 +2,10 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
+  const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -27,9 +29,12 @@ export default function Navbar() {
       <nav className="px-8 h-16 flex items-center justify-between">
 
         {/* Logo */}
-        <Link href="/" className="font-display text-xl text-ivory tracking-widest">
+        <button
+          onClick={() => router.push(`/?reset=${Date.now()}`)}
+          className="font-display text-xl text-ivory tracking-widest"
+        >
           OBSCURA
-        </Link>
+        </button>
 
         {/* Links desktop */}
         <div className="hidden md:flex items-center gap-8">
