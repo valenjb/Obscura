@@ -69,6 +69,10 @@
 
   /* Mobile / pantalla chica */
   @media (max-width: 640px) {
+    html, body {
+      overflow-x: hidden;
+    }
+
     .custom-scrollbar::-webkit-scrollbar {
       display: none;
     }

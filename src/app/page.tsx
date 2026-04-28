@@ -15,7 +15,7 @@ export default async function Home({
   ])
 
   return (
-    <main className="min-h-screen pt-24 px-8 pb-8">
+    <main className="min-h-screen pt-24 px-4 md:px-8 pb-8">
       <ExploreClient
         key={reset ?? 'default'}
         trending={trending}

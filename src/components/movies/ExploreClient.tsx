@@ -154,7 +154,7 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
   const showingSearch = searchResults !== null
 
   return (
-    <div className="flex gap-8">
+    <div className={`flex min-w-0 ${sidebarOpen ? 'gap-8' : 'gap-0'}`}>
 
       {/* Sidebar con animación */}
       <div className={`

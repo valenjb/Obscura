@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Search } from 'lucide-react'
 
 export default function Navbar() {
   const router = useRouter()
@@ -44,14 +45,14 @@ export default function Navbar() {
           <NavLink href="/">Explorar</NavLink>
           <NavLink href="/coleccion">Mi Colección</NavLink>
           <button className="text-muted hover:text-ivory transition-colors duration-200">
-            🔍
+            <Search size={18} />
           </button>
         </div>
 
         {/* Mobile: search + hamburguesa */}
         <div className="flex md:hidden items-center gap-4">
           <button className="text-muted hover:text-ivory transition-colors duration-200">
-            🔍
+            <Search size={18} />
           </button>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
