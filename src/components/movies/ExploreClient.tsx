@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Movie } from '@/types/tmdb'
 import { Filters } from '@/components/filters/FilterSidebar'
 import MovieRow from '@/components/movies/MovieRow'
@@ -24,6 +24,10 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
   const [totalPages, setTotalPages] = useState(0)
   const [totalResults, setTotalResults] = useState(0)
   const [activeFilters, setActiveFilters] = useState<Filters | null>(null)
+
+  useEffect(() => {
+    setSidebarOpen(false)
+  }, [])
 
   const fetchFilteredMovies = useCallback(async (filters: Filters, page: number) => {
     const params = new URLSearchParams()
@@ -156,10 +160,19 @@ export default function ExploreClient({ trending, arthouse, byDecade }: ExploreC
   return (
     <div className={`flex min-w-0 ${sidebarOpen ? 'gap-8' : 'gap-0'}`}>
 
+      {/* Overlay mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-10 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar con animación */}
       <div className={`
         flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out
-        sticky top-24 self-start max-h-screen overflow-y-auto sidebar-scrollbar
+        sticky top-24 self-start h-[calc(100vh-6rem)] overflow-y-auto sidebar-scrollbar
+        z-20
         ${sidebarOpen ? 'w-64 opacity-100' : 'w-0 opacity-0'}
       `}>
         <FilterSidebar onFiltersChange={handleFiltersChange} onClose={() => setSidebarOpen(false)} />
